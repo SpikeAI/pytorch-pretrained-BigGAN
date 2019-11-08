@@ -41,7 +41,10 @@ def convert_to_images(obj):
             list of Pillow Images of size (height, width)
     """
     try:
-        import PIL
+        try:
+            import Image
+        except ImportError:
+            from PIL import Image
     except ImportError:
         raise ImportError("Please install Pillow to use images: pip install Pillow")
 
@@ -54,7 +57,7 @@ def convert_to_images(obj):
     img = []
     for i, out in enumerate(obj):
         out_array = np.asarray(np.uint8(out), dtype=np.uint8)
-        img.append(PIL.Image.fromarray(out_array))
+        img.append(Image.fromarray(out_array))
     return img
 
 
@@ -84,7 +87,10 @@ def display_in_terminal(obj):
                 Images will be saved as `file_name_{image_number}.png`
     """
     try:
-        import PIL
+        try:
+            import Image
+        except ImportError:
+            from PIL import Image
         from libsixel import (sixel_output_new, sixel_dither_new, sixel_dither_initialize,
                               sixel_dither_set_palette, sixel_dither_set_pixelformat,
                               sixel_dither_get, sixel_encode, sixel_dither_unref,
@@ -105,7 +111,7 @@ def display_in_terminal(obj):
     output_width = sum(widths)
     output_height = max(heights)
 
-    output_image = PIL.Image.new('RGB', (output_width, output_height))
+    output_image = Image.new('RGB', (output_width, output_height))
 
     x_offset = 0
     for im in images:
